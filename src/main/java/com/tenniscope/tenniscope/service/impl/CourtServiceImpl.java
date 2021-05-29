@@ -1,6 +1,7 @@
 package com.tenniscope.tenniscope.service.impl;
 
 import com.tenniscope.tenniscope.dto.CourtDto;
+import com.tenniscope.tenniscope.entity.Company;
 import com.tenniscope.tenniscope.entity.Court;
 import com.tenniscope.tenniscope.repository.CourtRepository;
 import com.tenniscope.tenniscope.service.CourtService;
@@ -56,5 +57,34 @@ public class CourtServiceImpl implements CourtService {
         Court court = modelMapper.map(courtDto, Court.class);
         courtRepository.delete(court);
         return true;
+    }
+
+    @Override
+    public Boolean delete(Long id) {
+        Court isExistId = courtRepository.getById(id);
+        if (isExistId == null) {
+            throw new IllegalArgumentException("Court id not found");
+        }
+        courtRepository.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public CourtDto update(Long id, CourtDto courtDto) {
+        Court isExistId = courtRepository.getById(id);
+        if (isExistId == null)
+            throw new IllegalArgumentException("Court id does not exist");
+
+        isExistId.setName(courtDto.getName());
+        isExistId.setDescription(courtDto.getDescription());
+        isExistId.setCourtType(courtDto.getCourtType());
+
+        Company company = modelMapper.map(courtDto.getCompany(), Company.class);
+        isExistId.setCompany(company);
+
+        Court updatedCourt = courtRepository.save(isExistId);
+        CourtDto updatedCourtDto = modelMapper.map(updatedCourt, CourtDto.class);
+
+        return updatedCourtDto;
     }
 }

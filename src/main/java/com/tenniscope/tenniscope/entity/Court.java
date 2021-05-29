@@ -27,8 +27,8 @@ public class Court extends BaseEntity{
     @Enumerated(value = EnumType.STRING)
     private CourtType courtType;
 
-    @JoinColumn(name = "assigne_company_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Company company;
 
     /**

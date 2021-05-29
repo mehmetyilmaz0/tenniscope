@@ -2,6 +2,7 @@ package com.tenniscope.tenniscope.api;
 
 import com.tenniscope.tenniscope.dto.CompanyDto;
 import com.tenniscope.tenniscope.service.impl.CompanyServiceImpl;
+import com.tenniscope.tenniscope.util.ApiPaths;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping(ApiPaths.CompanyCtrl.CTRL)
 public class CompanyController {
 
     private final CompanyServiceImpl companyServiceImpl;

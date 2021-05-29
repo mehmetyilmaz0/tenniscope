@@ -16,4 +16,8 @@ public interface CourtService {
 
     Boolean delete(CourtDto courtDto);
 
+    Boolean delete(Long id);
+
+    CourtDto update(Long id, CourtDto courtDto);
+
 }
