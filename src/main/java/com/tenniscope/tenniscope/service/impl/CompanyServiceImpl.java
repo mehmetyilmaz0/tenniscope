@@ -5,6 +5,7 @@ import com.tenniscope.tenniscope.entity.Company;
 import com.tenniscope.tenniscope.repository.CompanyRepository;
 import com.tenniscope.tenniscope.service.CompanyService;
 import com.tenniscope.tenniscope.util.TPage;
+import org.h2.util.DateTimeUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +28,9 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDto save(CompanyDto companyDto) {
 
-        if (companyDto.getCompanyCode() == null || companyDto.getCompanyCode().equals("")) {
-            throw new IllegalArgumentException("Company code cannot be null or empty");
+        Company isExistCompanyCode = companyRepository.getCompanyByCompanyCode(companyDto.getCompanyCode());
+        if (isExistCompanyCode != null) {
+            throw new IllegalArgumentException("Company Code already exist!");
         }
 
         Company company = modelMapper.map(companyDto, Company.class);
@@ -57,4 +59,50 @@ public class CompanyServiceImpl implements CompanyService {
         companyRepository.delete(company);
         return true;
     }
+
+    @Override
+    public Boolean delete(Long id) {
+        Company isExistId = companyRepository.getById(id);
+        if (isExistId == null) {
+            throw new IllegalArgumentException("Company id not found");
+        }
+
+        companyRepository.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public CompanyDto getCompanyByCompanyCode(String companyCode) {
+        Company company = companyRepository.getCompanyByCompanyCode(companyCode);
+        CompanyDto companyDto = modelMapper.map(company, CompanyDto.class);
+        return companyDto;
+    }
+
+    @Override
+    public CompanyDto update(Long id, CompanyDto companyDto) {
+        Company isExistId = companyRepository.getById(id);
+        if (isExistId == null)
+            throw new IllegalArgumentException("Company id does not exist");
+
+        Company isExistCompanyCode = companyRepository.getCompanyByCompanyCode(companyDto.getCompanyCode());
+        if (isExistCompanyCode != null && !isExistCompanyCode.getCompanyCode().equals(isExistId.getCompanyCode()))
+            throw new IllegalArgumentException("Company code already exist");
+
+        isExistId.setCompanyCode(companyDto.getCompanyCode());
+        isExistId.setName(companyDto.getName());
+        isExistId.setAddress(companyDto.getAddress());
+        isExistId.setCity(companyDto.getCity());
+        isExistId.setDescription(companyDto.getDescription());
+        isExistId.setDistrict(companyDto.getDistrict());
+        isExistId.setMailAddress(companyDto.getMailAddress());
+        isExistId.setMobilePhone(companyDto.getMobilePhone());
+        isExistId.setOfficePhone(companyDto.getOfficePhone());
+
+        Company updatedCompany = companyRepository.save(isExistId);
+        CompanyDto updatedCompanyDto = modelMapper.map(updatedCompany, CompanyDto.class);
+
+        return updatedCompanyDto;
+    }
+
+
 }

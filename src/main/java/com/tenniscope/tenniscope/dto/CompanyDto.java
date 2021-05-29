@@ -1,9 +1,12 @@
 package com.tenniscope.tenniscope.dto;
 
+
 import com.tenniscope.tenniscope.entity.City;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -11,7 +14,9 @@ import lombok.NoArgsConstructor;
 public class CompanyDto {
 
     private Long id;
+    @NotNull
     private String companyCode;
+    @NotNull
     private String name;
     private String description;
     private String address;

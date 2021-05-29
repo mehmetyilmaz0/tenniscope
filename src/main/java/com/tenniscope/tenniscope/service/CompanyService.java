@@ -16,4 +16,10 @@ public interface CompanyService {
 
     Boolean delete(CompanyDto companyDto);
 
+    Boolean delete(Long id);
+
+    CompanyDto getCompanyByCompanyCode (String companyCode);
+
+    CompanyDto update (Long id, CompanyDto companyDto);
+
 }

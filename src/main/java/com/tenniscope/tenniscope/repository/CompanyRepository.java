@@ -18,5 +18,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     Page<Company> findAll(Pageable pageable);
 
+    Company getCompanyByCompanyCode (String companyCode);
+
 
 }
