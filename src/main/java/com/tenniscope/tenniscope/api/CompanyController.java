@@ -6,6 +6,7 @@ import com.tenniscope.tenniscope.service.impl.CompanyServiceImpl;
 import com.tenniscope.tenniscope.util.ApiPaths;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(ApiPaths.CompanyCtrl.CTRL)
 @Api(description = "Company APIs")
+@Slf4j
 public class CompanyController {
 
     private final CompanyServiceImpl companyServiceImpl;
@@ -26,6 +28,8 @@ public class CompanyController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Get By Id Operation", response = CompanyDto.class)
     public ResponseEntity<CompanyDto> getById(@PathVariable(value = "id", required = true) Long id) {
+        log.info("CompanyController -> getById");
+        log.debug("CompanyController -> getById -> Param : " + id);
         CompanyDto companyDto = companyServiceImpl.getById(id);
         return ResponseEntity.ok(companyDto);
     }
@@ -33,6 +37,8 @@ public class CompanyController {
     @PostMapping("")
     @ApiOperation(value = "Create Operation", response = CompanyDto.class)
     public ResponseEntity<CompanyDto> create(@Valid @RequestBody CompanyDto companyDto) {
+        log.info("CompanyController -> create");
+        log.debug("CompanyController -> create -> Param : " + companyDto);
         CompanyDto createdCompanyDto = companyServiceImpl.save(companyDto);
         return ResponseEntity.ok(createdCompanyDto);
     }
@@ -40,6 +46,8 @@ public class CompanyController {
     @PutMapping("/{id}")
     @ApiOperation(value = "Update Operation", response = CompanyDto.class)
     public ResponseEntity<CompanyDto> update (@PathVariable(value = "id", required = true) Long id, @Valid @RequestBody CompanyDto companyDto) {
+        log.info("CompanyController -> update");
+        log.debug("CompanyController -> update -> Param : " + id + " - " + companyDto);
         CompanyDto updatedCompanyDto = companyServiceImpl.update(id, companyDto);
         return ResponseEntity.ok(updatedCompanyDto);
     }
@@ -47,6 +55,8 @@ public class CompanyController {
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete Operation", response = Boolean.class)
     public ResponseEntity<Boolean> delete (@PathVariable(value = "id", required = true) Long id) {
+        log.info("CompanyController -> delete");
+        log.debug("CompanyController -> delete -> Param : " + id);
         Boolean isDelete = companyServiceImpl.delete(id);
         return ResponseEntity.ok(isDelete);
     }
