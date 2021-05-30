@@ -1,11 +1,14 @@
 package com.tenniscope.tenniscope.api;
 
+import com.tenniscope.tenniscope.dto.CompanyDto;
 import com.tenniscope.tenniscope.dto.CourtDto;
 import com.tenniscope.tenniscope.service.impl.CourtServiceImpl;
 import com.tenniscope.tenniscope.util.ApiPaths;
+import com.tenniscope.tenniscope.util.TPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +61,15 @@ public class CourtController {
         log.debug("CourtController -> delete -> Param : " + id);
         Boolean isDelete = courtServiceImpl.delete(id);
         return ResponseEntity.ok(isDelete);
+    }
+
+    @GetMapping("/pagination")
+    @ApiOperation(value = "Get All Pagination Operation", response = CourtDto.class)
+    public ResponseEntity<TPage<CourtDto>> getAllByPagination(Pageable pageable) {
+        log.info("CourtController -> getAllByPagination");
+        log.debug("CourtController -> getAllByPagination -> Param : " + pageable);
+        TPage<CourtDto> courtDtoTPage = courtServiceImpl.getAllPageable(pageable);
+        return ResponseEntity.ok(courtDtoTPage);
     }
     
 }
